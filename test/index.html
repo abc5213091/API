@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			div{line-height: 1.5}
+			.del{ border-radius: 50%; display: inline-block; padding: 10px; background-color: #ffd}
+		</style>
+	</head>
+
+	<body>
+
+		<form action="http://localhost:3000/api/login" method="get" >
+			<input type="text" name="username" value="王小二"><br>
+			<input type="text" name="mobileNumber" value="1234567890"><br>
+			<input type="submit"  value="获取token">
+		</form>
+
+		<form action="http://localhost:3000/api/article" method="post" >
+			<input type="text" name="title" value="我叫王小二"><br>
+			<input type="text" name="username" value="王小二"><br>
+			<input type="text" name="link" value="http://www.niiwoo.com"><br>
+			<input type="text" name="tagID" value="57b184cb4a01327410de7b27"><br>
+			<input type="text" name="tagName" value="你我金融"><br>
+			<input type="submit"  value="添加数据">
+		</form>
+
+		<script src="http://cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
+		<script>
+			$(function(){
+				var div = '';
+				var url = 'http://localhost:3000/api/article/';
+				$.get(url,function(db){
+					$.each(db,function(k,v){
+						div+='<div>'+v.title+' <span class="del" aid='+v._id+'>删</span></div>';
+					})
+					$('body').append(div);
+				})
+
+				$(document).on('click','.del',function(){
+					var id = $(this).attr('aid');
+					$.ajax({
+						url:url+id,
+						type:"DELETE",
+						success:function(db){
+							console.log(db)
+						}
+					})
+				})
+			})
+		</script>
+	</body>
+</html>
